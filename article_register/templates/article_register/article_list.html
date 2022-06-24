@@ -1,0 +1,43 @@
+{% extends "article_register/base.html" %}
+{% block content %}
+{% load my_templatetag %}
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Entrees</td>
+            <td>Sorties</td>
+            <td>Solde</td>
+            <td>
+                <a href="{% url 'article_insert' %}" class="btn btn-outline-success">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for article in article_list %}
+            <tr>
+                <td>{{article.name}}</td>
+                <td>{{article.description}}</td>
+                <td>{{article.entrees}}</td>
+                <td>{{article.sorties}}</td>
+                <td id="solde">{{ article.entrees|sub:article.sorties }}</td>
+                <td>
+                    <a href="{% url 'article_update' article.id %}" class="btn text-secondary px-0">
+                        <i class="far fa-edit fa-lg"></i>
+                    </a>
+                    <form action="{% url 'article_delete' article.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
